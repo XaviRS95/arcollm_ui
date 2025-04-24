@@ -1,0 +1,87 @@
+#navbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: #212327;
+}
+
+#dropdown_menu{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 150px;
+    height: auto;
+    color: #eeeeee;
+    font-family: 'Lato', arial, sans-serif;
+}
+
+#dropdown_menu div{
+    background-color: #1976d2;
+    height: auto;
+    border: 1px solid #eeeeee;
+}
+
+#dropdown_menu p{
+    margin: 0;
+    padding: 10px;
+}
+
+.username{
+    font-size: 15px;
+}
+
+.logout{
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#dropdown_menu div:nth-child(odd){
+    text-align: left;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#dropdown_menu div:nth-child(even){
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#auxdiv{
+    flex-grow: 1;
+}
+
+#navbarlogodiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    flex-grow: 2;
+}
+
+#navbarlogodiv img{
+    height: 30px;
+    width: 100px;
+}
+
+#loginimgdiv{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: flex-end;
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+#loginimgdiv img{
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}

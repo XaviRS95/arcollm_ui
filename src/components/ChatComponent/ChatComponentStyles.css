@@ -1,0 +1,45 @@
+#ChatComponentMain{
+    width: 80vw;
+    max-height: 83vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-div{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    }
+
+.user-message{
+    max-width: 50%;
+    height: auto;
+    background-color: #404045;
+    color: white;
+    border-radius: 10px;
+    align-self: flex-end;
+    margin-right: 20px;
+    padding: 10px;
+    overflow: scroll;
+    text-align: left;
+}
+.answer-message{
+    max-width: 50%;
+    height: auto;
+    background-color: #414158;
+    color: white;
+    border-radius: 10px;
+    align-self: flex-start;
+    margin-left: 20px;
+    padding: 10px;
+    overflow: scroll;
+    text-align: left;
+}
+
+p{
+    margin: 0;
+}

@@ -1,0 +1,59 @@
+#TextInputComponentContainer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+}
+
+#TextInputComponent {
+    min-height: 50px;
+    max-height: 200px;
+    min-width: 30vw;
+    height: auto;
+    padding: 0 10px 10px 10px;
+    background-color: #343541;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#TextInputOptionSelector{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-textarea {
+    width: 99%;
+    flex: 1;
+    background-color: #40414f;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    outline: none;
+    height: auto;
+    max-height: 400px;
+    overflow-y: scroll;
+    transition: height 0.2s ease;
+    resize: none;
+}
+
+.send-button {
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    align-self: flex-end;
+}
