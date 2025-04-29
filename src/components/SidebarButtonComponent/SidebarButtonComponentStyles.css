@@ -1,0 +1,9 @@
+#sidebarIcon{
+    position: absolute;
+    top: 65px;
+    left: 15px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 2;
+}

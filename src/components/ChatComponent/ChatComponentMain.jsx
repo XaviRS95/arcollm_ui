@@ -8,7 +8,7 @@ export default function ChatComponentMain({ message }) {
     const [generatedMessages, setGeneratedMessages] = useState([]);
     const [messageQueue, setMessageQueue] = useState([]);
     const lastMachineMessageIndexRef = useRef(null);
-    var messageHistory = [] //History of this whole conversation as a list of JSONs
+    var messageHistory = useRef([]) //History of this whole conversation as a list of JSONs
 
     // Watch for new props and queue them
     useEffect(() => {
@@ -77,19 +77,18 @@ export default function ChatComponentMain({ message }) {
         lastMachineMessageIndexRef.current = machineIndex;
 
         try {
-            messageHistory.push(
-                {
-                    'role': 'user',
-                    'content': prompt
-                }
-            )
+            messageHistory.current.push({
+                role: 'user',
+                content: prompt
+            });
+
             const response = await fetch("http://localhost:8000/api/async_generate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    prompt: prompt,
+                    messages: messageHistory.current,
                     model: model
                 })
             });
@@ -137,12 +136,14 @@ export default function ChatComponentMain({ message }) {
                 });
             }
 
-            messageHistory.push(
+            messageHistory.current.push(
                 {
-                    'role': 'model',
+                    'role': 'assistant',
                     'content': streamedText
                 }
             )
+
+            console.log(messageHistory.current);
 
         } catch (error) {
             console.error("Streaming error:", error);

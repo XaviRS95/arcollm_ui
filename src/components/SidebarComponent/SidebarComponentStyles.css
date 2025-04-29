@@ -1,0 +1,39 @@
+#SidebarComponentMain{
+    height: 100%;
+    width: 300px;
+    top: 50px;
+    left: 0;
+    padding: 10px 5px 0 5px;
+    position: absolute;
+    overflow-x: clip;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    background-color: #343541;
+    border-radius: 10px;
+}
+
+#nameDisplay{
+    width: 100%;
+    color: white;
+    text-align: center;
+    font-size: 25px;
+}
+
+#conversationsHistory{
+    width: 100%;
+    height: auto;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation{
+    width: auto;
+    background-color: #40414f;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
