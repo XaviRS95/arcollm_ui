@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: center;
     align-self: end;
+    z-index: 1;
 }
 
 #TextInputComponent {

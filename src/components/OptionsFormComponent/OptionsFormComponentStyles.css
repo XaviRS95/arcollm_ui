@@ -1,0 +1,39 @@
+.options-form {
+    width: 500px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+}
+
+.options-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 45%;
+}
+
+.options-form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.options-form-group input[type="number"],
+.options-form-group input[type="text"] {
+    padding: 0.4rem;
+    font-size: 1rem;
+    border: 1px solid #999;
+    border-radius: 4px;
+    max-width: 50px;
+}
+
+.options-form-checkbox {
+    flex-direction: row;
+    align-items: center;
+}
