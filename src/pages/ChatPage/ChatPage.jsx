@@ -10,19 +10,28 @@ import OptionsFormComponentMain from "../../components/OptionsFormComponent/Opti
 export default function ChatPage() {
 
     const [message, setMessage] = useState("");
+    var [model,setModel] = useState("");
     var [sidebarVisible, setSidebarVisible] = useState(false);
     var [optionsVisible, setOptionsVisible] = useState(false);
     var [modelOptions, setModelOptions] = useState({});
+
+
+
+
+
     var handleMessageSend = (msg) => {
         setMessage(msg)
     };
+
+    var handleModelChange = (state) => {
+        setModel(state)
+    }
 
     var handleSidebarVisible = (state) => {
         setSidebarVisible(state)
     };
 
     var handleOptionsVisible = (state) => {
-        console.log(state)
         setOptionsVisible(state)
     };
 
@@ -33,9 +42,9 @@ export default function ChatPage() {
     return (
         <div id={'ChatPage'}>
             <BannerComponentMain/>
-            <OptionsFormComponentMain isVisible={optionsVisible} onChange={handleOptionsChange}/>
+            <OptionsFormComponentMain isVisible={optionsVisible} onModelChange={handleModelChange} onOptionsChange={handleOptionsChange}/>
             <SidebarButtonComponentMain isVisible={sidebarVisible} onChangeState={handleSidebarVisible}/>
-            <ChatComponentMain message={message}/>
+            <ChatComponentMain message={message} model={model} options={modelOptions}/>
             <SidebarComponentMain visibleState={sidebarVisible}/>
             <TextInputComponentMain onOpenOptions={handleOptionsVisible} onSend={handleMessageSend}/>
         </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import ModelSelectorComponentMain from "./ModelSelectorComponent/ModelSelectorComponentMain.jsx";
 import './OptionsFormComponentStyles.css';
 
-export default function OptionsFormComponentMain({isVisible, onChange }) {
-
+export default function OptionsFormComponentMain({isVisible, onModelChange, onOptionsChange }) {
     const [options, setOptions] = useState({
         temperature: 0.8,
         top_p: 1,
@@ -16,15 +16,17 @@ export default function OptionsFormComponentMain({isVisible, onChange }) {
         mirostat: 0,
         mirostat_tau: 5.0,
         mirostat_eta: 0.1,
-        stop: '',
-        grammar: '',
     });
 
     const handleChange = (key, value) => {
         const newOptions = { ...options, [key]: value };
         setOptions(newOptions);
-        onChange?.(newOptions);
+        onOptionsChange?.(newOptions);
     };
+
+    var handleModelChange = (state) => {
+        onModelChange?.(state);
+    }
 
     const sliders = [
         ['temperature', 0.0, 2.0, 0.01],
@@ -41,48 +43,28 @@ export default function OptionsFormComponentMain({isVisible, onChange }) {
         ['mirostat_eta', 0.01, 1.0, 0.01],
     ];
 
-
     return isVisible ? (
-        <form className="options-form">
-            {sliders.map(([key, min, max, step]) => (
-                <div key={key} className="options-form-group">
-                    <label htmlFor={key}>
-                        {key}: <span className="options-form-value">{options[key]}</span>
-                    </label>
-                    <input
-                        id={key}
-                        type="range"
-                        value={options[key]}
-                        min={min}
-                        max={max}
-                        step={step}
-                        onChange={(e) => handleChange(key, parseFloat(e.target.value))}
-                    />
-                </div>
-            ))}
-
-
-
-            <div className="options-form-group">
-                <label htmlFor="stop">Stop token(s) (comma separated)</label>
-                <input
-                    id="stop"
-                    type="text"
-                    value={options.stop}
-                    onChange={(e) => handleChange('stop', e.target.value)}
-                />
-            </div>
-
-            <div className="options-form-group">
-                <label htmlFor="grammar">Grammar</label>
-                <input
-                    id="grammar"
-                    type="text"
-                    value={options.grammar}
-                    onChange={(e) => handleChange('grammar', e.target.value)}
-                />
-            </div>
-
-        </form>
+        <div id='options-form-container'>
+            <h2>Ollama Model Options:</h2>
+            <form className="options-form">
+                {sliders.map(([key, min, max, step]) => (
+                    <div key={key} className="options-form-group">
+                        <label htmlFor={key}>
+                            {key}: <span className="options-form-value">{options[key]}</span>
+                        </label>
+                        <input
+                            id={key}
+                            type="range"
+                            value={options[key]}
+                            min={min}
+                            max={max}
+                            step={step}
+                            onChange={(e) => handleChange(key, parseFloat(e.target.value))}
+                        />
+                    </div>
+                ))}
+            </form>
+            <ModelSelectorComponentMain onModelChange={handleModelChange}/>
+        </div>
     ): null;
 }

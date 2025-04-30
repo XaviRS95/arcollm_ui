@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useEffect, useState, useRef } from "react";
 
-export default function ChatComponentMain({ message }) {
+export default function ChatComponentMain({message, model, options}) {
     const [generatedMessages, setGeneratedMessages] = useState([]);
     const [messageQueue, setMessageQueue] = useState([]);
     const lastMachineMessageIndexRef = useRef(null);
@@ -12,7 +12,8 @@ export default function ChatComponentMain({ message }) {
 
     // Watch for new props and queue them
     useEffect(() => {
-        if (message && message.prompt && message.prompt.length > 0) {
+
+        if (message && message.length > 0) {
             setMessageQueue(prev => [...prev, message]);
         }
     }, [message]);
@@ -28,7 +29,7 @@ export default function ChatComponentMain({ message }) {
             <div className="text-div" key={`user-${userIndex}`}>
                 <div className="user-message">
                     <ReactMarkdown
-                        children={nextMessage.prompt}
+                        children={nextMessage}
                         components={{
                             code({inline, className, children, ...props}) {
                                 const match = /language-(\w+)/.exec(className || '');
@@ -56,7 +57,7 @@ export default function ChatComponentMain({ message }) {
         setGeneratedMessages(prev => [...prev, userMessage]);
 
         // Generate machine response using both prompt and model
-        generateMachineResponse(nextMessage.prompt, nextMessage.model, userIndex + 1);
+        generateMachineResponse(nextMessage, model, userIndex + 1);
 
         // Remove processed message from the queue
         setMessageQueue(prev => prev.slice(1));
@@ -77,10 +78,17 @@ export default function ChatComponentMain({ message }) {
         lastMachineMessageIndexRef.current = machineIndex;
 
         try {
+            console.log(prompt, model)
             messageHistory.current.push({
                 role: 'user',
                 content: prompt
             });
+
+            console.log({
+                messages: messageHistory.current,
+                options: {},
+                model: model
+            })
 
             const response = await fetch("http://localhost:8000/api/chat_request", {
                 method: "POST",

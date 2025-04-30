@@ -1,29 +1,28 @@
 import './TextInputComponentStyles.css'
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import send_icon from "/send-icon.png";
 import options_icon from "/options-icon.png";
-import ModelSelectorComponentMain from "./ModelSelectorComponent/ModelSelectorComponentMain.jsx";
+import ModelSelectorComponentMain from "../OptionsFormComponent/ModelSelectorComponent/ModelSelectorComponentMain.jsx";
 
 
 export default function TextInputComponentMain({onOpenOptions, onSend}){
 
     const [message, setMessage] = useState("");
     const [rows, setRows] = useState(1);
-    const [models, setModels] = useState(null);
-    var [selectedModel, setSelectedModel] = useState(null);
     var [openOptions, setOpenOptions] = useState(false);
 
     const handleSend = () => {
-        if (message.trim() === "" && selectedModel === null) return;
-        console.log({"prompt": message, "model": selectedModel})
-        onSend({"prompt": message, "model": selectedModel});
+
+        if (message.trim() === "") return;
+        onSend(message);
         setMessage("");
         setRows(1);
     };
 
     var handleOpenOptions = () => {
-        setOpenOptions(!openOptions);
-        onOpenOptions(openOptions);
+        var new_option = !openOptions
+        setOpenOptions(new_option);
+        onOpenOptions(new_option);
     }
 
     const handleKeyDown = (e) => {
@@ -58,34 +57,6 @@ export default function TextInputComponentMain({onOpenOptions, onSend}){
         setRows(currentRows < maxRows ? currentRows : maxRows);
     };
 
-    const handleModelChange = (model) => {
-        console.log("Selected model:", model.value);
-        setSelectedModel(model.value);
-    };
-
-    useEffect(() => {
-        async function getModels() {
-            try {
-                const response = await fetch("http://localhost:8000/api/models_list", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                var data = await response.json();
-                data = data.models.map(model => ({
-                    value: model,
-                    label: model
-                }));
-                setModels(data);
-            } catch (error) {
-                console.error("Model List collection error:", error);
-            }
-        }
-
-        getModels();
-    }, []);
 
     return (
             <div id="TextInputComponentContainer">
@@ -99,7 +70,6 @@ export default function TextInputComponentMain({onOpenOptions, onSend}){
                     rows={rows}
                 />
                     <div id="TextInputOptionSelector">
-                        <ModelSelectorComponentMain models={models} onModelChange={handleModelChange} />
                         <img className="send-button" src={options_icon} onClick={handleOpenOptions}/>
                         <img className="send-button" src={send_icon} onClick={handleSend}/>
                     </div>

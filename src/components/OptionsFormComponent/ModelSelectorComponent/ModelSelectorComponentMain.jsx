@@ -45,24 +45,49 @@ const customStyles = {
 };
 
 
-export default function ModelSelectorComponentMain({models, onModelChange}) {
+export default function ModelSelectorComponentMain({onModelChange}) {
     var [model, setModel] = useState("0 models");
+    var [availableModels, setAvailableModels] = useState([]);
+
 
     const handleChange = (selectedOption) => {
         setModel(selectedOption.label);
-        onModelChange && onModelChange(selectedOption); // notify parent on user change
+        onModelChange && onModelChange(selectedOption.label); // notify parent on user change
     };
 
     useEffect(() => {
-        if (models && models.length > 0) {
-            setModel(models[0].label);
-            onModelChange && onModelChange(models[0]); //Updates selected model
+        async function getModels() {
+            try {
+                const response = await fetch("http://localhost:8000/api/models_list", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                var data = await response.json();
+                data = data.models.map(model => ({
+                    value: model,
+                    label: model
+                }));
+                setAvailableModels(data);
+            } catch (error) {
+                console.error("Model List collection error:", error);
+            }
         }
-    }, [models]);  // <--- react to changes in models only
+        getModels();
+    }, []);
+
+    useEffect(() => {
+        if (availableModels && availableModels.length > 0) {
+            setModel(availableModels[0].label);
+            onModelChange && onModelChange(availableModels[0]); //Updates selected model
+        }
+    }, [availableModels]);  // <--- react to changes in models only
 
     return (
         <Select
-            options={models}
+            options={availableModels}
             styles={customStyles}
             menuPlacement="top"
             placeholder={model}
