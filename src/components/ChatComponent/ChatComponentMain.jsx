@@ -82,14 +82,16 @@ export default function ChatComponentMain({ message }) {
                 content: prompt
             });
 
-            const response = await fetch("http://localhost:8000/api/async_generate", {
+            const response = await fetch("http://localhost:8000/api/chat_request", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     messages: messageHistory.current,
+                    options: {},
                     model: model
+
                 })
             });
 

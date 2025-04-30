@@ -1,15 +1,17 @@
 import './TextInputComponentStyles.css'
 import React, {useEffect, useState} from "react";
 import send_icon from "/send-icon.png";
+import options_icon from "/options-icon.png";
 import ModelSelectorComponentMain from "./ModelSelectorComponent/ModelSelectorComponentMain.jsx";
 
 
-export default function TextInputComponentMain({onSend}){
+export default function TextInputComponentMain({onOpenOptions, onSend}){
 
     const [message, setMessage] = useState("");
     const [rows, setRows] = useState(1);
     const [models, setModels] = useState(null);
     var [selectedModel, setSelectedModel] = useState(null);
+    var [openOptions, setOpenOptions] = useState(false);
 
     const handleSend = () => {
         if (message.trim() === "" && selectedModel === null) return;
@@ -18,6 +20,11 @@ export default function TextInputComponentMain({onSend}){
         setMessage("");
         setRows(1);
     };
+
+    var handleOpenOptions = () => {
+        setOpenOptions(!openOptions);
+        onOpenOptions(openOptions);
+    }
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -67,7 +74,7 @@ export default function TextInputComponentMain({onSend}){
                 });
 
                 var data = await response.json();
-                data = data.map(model => ({
+                data = data.models.map(model => ({
                     value: model,
                     label: model
                 }));
@@ -93,6 +100,7 @@ export default function TextInputComponentMain({onSend}){
                 />
                     <div id="TextInputOptionSelector">
                         <ModelSelectorComponentMain models={models} onModelChange={handleModelChange} />
+                        <img className="send-button" src={options_icon} onClick={handleOpenOptions}/>
                         <img className="send-button" src={send_icon} onClick={handleSend}/>
                     </div>
                 </div>

@@ -1,16 +1,23 @@
 .options-form {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     width: 500px;
-    margin: 0 auto;
     padding: 1rem;
     font-family: Arial, sans-serif;
     border: 1px solid #ccc;
     border-radius: 8px;
+
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: wrap;
-
+    z-index: 1;
 }
+
 
 .options-form-group {
     display: flex;

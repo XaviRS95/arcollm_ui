@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './OptionsFormComponentStyles.css';
 
-export default function OptionsFormComponentMain({ onChange }) {
+export default function OptionsFormComponentMain({isVisible, onChange }) {
+
     const [options, setOptions] = useState({
         temperature: 0.8,
         top_p: 1,
@@ -16,7 +17,6 @@ export default function OptionsFormComponentMain({ onChange }) {
         mirostat_tau: 5.0,
         mirostat_eta: 0.1,
         stop: '',
-        stream: true,
         grammar: '',
     });
 
@@ -41,7 +41,8 @@ export default function OptionsFormComponentMain({ onChange }) {
         ['mirostat_eta', 0.01, 1.0, 0.01],
     ];
 
-    return (
+
+    return isVisible ? (
         <form className="options-form">
             {sliders.map(([key, min, max, step]) => (
                 <div key={key} className="options-form-group">
@@ -82,17 +83,6 @@ export default function OptionsFormComponentMain({ onChange }) {
                 />
             </div>
 
-            <div className="options-form-group options-form-checkbox">
-                <label htmlFor="stream">
-                    <input
-                        id="stream"
-                        type="checkbox"
-                        checked={options.stream}
-                        onChange={(e) => handleChange('stream', e.target.checked)}
-                    />
-                    Stream
-                </label>
-            </div>
         </form>
-    );
+    ): null;
 }

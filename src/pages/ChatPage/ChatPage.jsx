@@ -11,24 +11,33 @@ export default function ChatPage() {
 
     const [message, setMessage] = useState("");
     var [sidebarVisible, setSidebarVisible] = useState(false);
-
-
-    const handleMessageSend = (msg) => {
+    var [optionsVisible, setOptionsVisible] = useState(false);
+    var [modelOptions, setModelOptions] = useState({});
+    var handleMessageSend = (msg) => {
         setMessage(msg)
     };
 
-    const handleSidebarVisible = (state) => {
+    var handleSidebarVisible = (state) => {
         setSidebarVisible(state)
+    };
+
+    var handleOptionsVisible = (state) => {
+        console.log(state)
+        setOptionsVisible(state)
+    };
+
+    var handleOptionsChange = (state) => {
+        setModelOptions(state)
     };
 
     return (
         <div id={'ChatPage'}>
             <BannerComponentMain/>
-            <OptionsFormComponentMain/>
+            <OptionsFormComponentMain isVisible={optionsVisible} onChange={handleOptionsChange}/>
             <SidebarButtonComponentMain isVisible={sidebarVisible} onChangeState={handleSidebarVisible}/>
             <ChatComponentMain message={message}/>
             <SidebarComponentMain visibleState={sidebarVisible}/>
-            <TextInputComponentMain onSend={handleMessageSend}/>
+            <TextInputComponentMain onOpenOptions={handleOptionsVisible} onSend={handleMessageSend}/>
         </div>
     )
 }
