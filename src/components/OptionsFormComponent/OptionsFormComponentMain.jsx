@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ModelSelectorComponentMain from "./ModelSelectorComponent/ModelSelectorComponentMain.jsx";
 import './OptionsFormComponentStyles.css';
 
-export default function OptionsFormComponentMain({isVisible, onModelChange, onOptionsChange }) {
+export default function OptionsFormComponentMain({
+                                                     isVisible,
+                                                     availableModels,
+                                                     selectedModel,
+                                                     onModelChange,
+                                                     onOptionsChange
+                                                 }) {
     const [options, setOptions] = useState({
         temperature: 0.8,
         top_p: 1,
@@ -64,7 +70,11 @@ export default function OptionsFormComponentMain({isVisible, onModelChange, onOp
                     </div>
                 ))}
             </form>
-            <ModelSelectorComponentMain onModelChange={handleModelChange}/>
+            <ModelSelectorComponentMain
+                availableModels={availableModels}
+                selectedModel={selectedModel}
+                onModelChange={handleModelChange}
+            />
         </div>
     ): null;
 }
