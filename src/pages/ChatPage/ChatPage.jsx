@@ -7,6 +7,7 @@ import SidebarComponentMain from "../../components/SidebarComponent/SidebarCompo
 import SidebarButtonComponentMain from "../../components/SidebarButtonComponent/SidebarButtonComponentMain.jsx";
 import OptionsFormComponentMain from "../../components/OptionsFormComponent/OptionsFormComponentMain.jsx";
 import { useModels } from "../../hooks/getModelsHook.jsx";
+import {useConversationsListHook} from "../../hooks/getConversationsListHook.jsx";
 
 export default function ChatPage() {
 
@@ -16,8 +17,22 @@ export default function ChatPage() {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(false);
     const [modelOptions, setModelOptions] = useState({});
+    const USER_DATA = {
+        "name": "Benito Camela",
+        "email": "benitocamela@gmail.com",
+    }
+    const user_conversations_list = useConversationsListHook(USER_DATA["email"]);
+    const [loadedConversation, setLoadedConversation] = useState([]);
+    const [conversationId, setConversationId] = useState(null);
 
+    useEffect(() => {
+        console.log(user_conversations_list)
+    }, [user_conversations_list]);
+
+    //Data initialization
     const { model: defaultModel, availableModels: newAvailableModels } = useModels();
+
+
 
     // Fetch models and selected model from the custom hook
     useEffect(() => {
@@ -45,6 +60,16 @@ export default function ChatPage() {
         setModelOptions(state);
     };
 
+    const handleOnConversationClick = (state) => {
+        setConversationId(state);
+    }
+
+    const handleRetrieveConversation = (conversation_id) => {
+        //conversation = getConversationHook(conversation_id)
+        var conversation = []
+        setLoadedConversation(conversation);
+    }
+
     return (
         <div id="ChatPage">
             <BannerComponentMain />
@@ -58,8 +83,8 @@ export default function ChatPage() {
                 />
             }
             <SidebarButtonComponentMain isVisible={sidebarVisible} onChangeState={handleSidebarVisible} />
-            <ChatComponentMain message={message} model={selectedModel} options={modelOptions} />
-            <SidebarComponentMain visibleState={sidebarVisible} />
+            <ChatComponentMain message={message} model={selectedModel} options={modelOptions} conversation={loadedConversation} user_mail={USER_DATA['email']} conversation_id={conversationId}/>
+            <SidebarComponentMain visibleState={sidebarVisible} user_data={USER_DATA} conversations={user_conversations_list} onConversationClick={handleOnConversationClick}/>
             <TextInputComponentMain onOpenOptions={handleOptionsVisible} onSend={handleMessageSend} />
         </div>
     );

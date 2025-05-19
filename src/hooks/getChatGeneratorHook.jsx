@@ -1,11 +1,10 @@
-
 import { useEffect, useRef, useState } from "react";
 import { getStreamingChatCall } from "../api/getStreamingChatCall.jsx";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-export function useGeneratorHook(message, model, options) {
+export function useGeneratorHook(message, model, options, conversation, user_mail, conversation_id) {
     const [generatedMessages, setGeneratedMessages] = useState([]);
     const [messageQueue, setMessageQueue] = useState([]);
     const lastMachineMessageIndexRef = useRef(null);
@@ -17,13 +16,8 @@ export function useGeneratorHook(message, model, options) {
         }
     }, [message]);
 
-    useEffect(() => {
-        if (messageQueue.length === 0) return;
-
-        const nextMessage = messageQueue[0];
-        const userIndex = generatedMessages.length;
-
-        const userMessage = (
+    function generateInputMessage(nextMessage, userIndex) {
+        return (
             <div className="text-div" key={`user-${userIndex}`}>
                 <div className="user-message">
                     <ReactMarkdown
@@ -49,6 +43,46 @@ export function useGeneratorHook(message, model, options) {
                 </div>
             </div>
         );
+    }
+
+    function generateResponseMessage(nextMessage, machineIndex){
+
+        return (
+            <div className="text-div" key={`machine-${machineIndex}`}>
+                <div className="answer-message">
+                    <ReactMarkdown
+                        children={nextMessage}
+                        components={{
+                            code({ inline, className, children, ...props }) {
+                                const match = /language-(\w+)/.exec(className || '');
+                                return !inline && match ? (
+                                    <SyntaxHighlighter
+                                        style={oneDark}
+                                        language={match[1]}
+                                        PreTag="div"
+                                        {...props}
+                                    >
+                                        {String(children).replace(/\n$/, '')}
+                                    </SyntaxHighlighter>
+                                ) : (
+                                    <code className={className} {...props}>{children}</code>
+                                );
+                            }
+                        }}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+
+    useEffect(() => {
+        if (messageQueue.length === 0) return;
+
+        const nextMessage = messageQueue[0];
+        const userIndex = generatedMessages.length;
+
+        const userMessage = generateInputMessage(nextMessage, userIndex)
 
         setGeneratedMessages(prev => [...prev, userMessage]);
 
@@ -66,6 +100,8 @@ export function useGeneratorHook(message, model, options) {
             model,
             options,
             messageHistory.current,
+            user_mail,
+            conversation_id,
             (streamedText) => {
                 setGeneratedMessages(prev => {
                     const updated = [...prev];

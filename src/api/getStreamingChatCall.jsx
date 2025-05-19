@@ -1,6 +1,6 @@
 
 
-export async function getStreamingChatCall(prompt, model, options, messageHistory, onStreamChunk) {
+export async function getStreamingChatCall(prompt, model, options, messageHistory, user_mail, conversation_id, onStreamChunk) {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const API_ASYNC_REQUEST = import.meta.env.VITE_API_ASYNC_REQUEST;
 
@@ -9,10 +9,19 @@ export async function getStreamingChatCall(prompt, model, options, messageHistor
     try {
         messageHistory.push({ role: 'user', content: prompt });
 
+        var body = JSON.stringify({
+            messages: messageHistory,
+            options,
+            model,
+            user_mail: user_mail,
+            conversation_id: conversation_id})
+
+        console.log(body);
+
         const response = await fetch(BASE_URL + API_ASYNC_REQUEST, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: messageHistory, options, model })
+            body: body
         });
 
         const reader = response.body.getReader();
